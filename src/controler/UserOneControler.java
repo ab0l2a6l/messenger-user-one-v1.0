@@ -15,7 +15,11 @@ public class UserOneControler {
         write.save(userOne);
     }
 
-    public List<UserOne> findByAll(long id) {
+    public List<UserOne> findByAll(String  id) {
         return read.findByALl(id);
+    }
+
+    public boolean findByUsername(UserOne userOne) {
+        return read.findByUsername(userOne);
     }
 }

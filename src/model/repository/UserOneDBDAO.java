@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
-    private final String url = "jdbc:mysql://localhost:3306/firstdb";
+    private final String url = "jdbc:mysql://localhost:3306/messenger";
     private final String username = "root";
     private final String password = "Am311865186";
 
@@ -30,23 +30,35 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
     }
 
     @Override
-    public List<UserOne> findByALl(long id) throws Exception {
-        query = "select * from messenger where messenger_id = " + id;
+    public List<UserOne> findByALl(String  id) throws Exception {
+        query = "select * from chat where username_private = \"" + id+"\"";
         ResultSet set = statement.executeQuery(query);
         List<UserOne> userOneList = new ArrayList<>();
         while (set.next()) {
             UserOne userOne = new UserOne();
-            userOne.setId(set.getInt("messenger_id"));
-            userOne.setText(set.getString("messenger_text"));
+            userOne.setUsername(set.getString("username_private"));
+            userOne.setText(set.getString("text"));
             userOneList.add(userOne);
         }
         return userOneList;
     }
 
     @Override
+    public boolean findByUsername(UserOne userOne) throws Exception {
+        query = "select * from private where password =\""+userOne.getPassword()
+                +"\" and username =\""+userOne.getUsername() +"\"";
+        System.out.println(query);
+        ResultSet set = statement.executeQuery(query);
+        if (set.next()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void save(UserOne userOne) throws Exception {
-        query = "insert into messenger (messenger_id , messenger_text) values ("
-                + userOne.getId() + " , \"" + userOne.getText() + "\")";
+        query = "insert into chat (text , username_private) values (\""
+                + userOne.getText() + "\" , \"" + userOne.getUsername() + "\")";
         statement.executeUpdate(query);
         System.out.println(query);
 

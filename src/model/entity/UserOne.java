@@ -2,13 +2,14 @@ package model.entity;
 
 public class UserOne {
     private String text;
-    private long id;
+    private String username;
+    private String password;
 
     @Override
     public String toString() {
         return "UserOne{" +
                 "text='" + text + '\'' +
-                ", id=" + id +
+                ", id=" + username +
                 '}';
     }
 
@@ -20,11 +21,19 @@ public class UserOne {
         this.text = text;
     }
 
-    public long getId() {
-        return id;
+    public String  getUsername() {
+        return username;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

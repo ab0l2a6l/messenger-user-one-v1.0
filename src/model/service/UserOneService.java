@@ -12,17 +12,30 @@ public class UserOneService implements UserOneServiceRead, UserOneServiceWrite {
     UserOneDBDAORead read;
 
     @Override
-    public List<UserOne> findByALl(long id) {
+    public List<UserOne> findByALl(String  username) {
         List<UserOne> userOneList;
         try {
             read = new UserOneDBDAO();
-            userOneList = read.findByALl(id);
+            userOneList = read.findByALl(username);
             read.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         return userOneList;
+    }
+
+    @Override
+    public boolean findByUsername(UserOne userOne) {
+        boolean ByUsername;
+        try {
+            read = new UserOneDBDAO();
+            ByUsername = read.findByUsername(userOne);
+            read.close();
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ByUsername;
     }
 
     @Override
