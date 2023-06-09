@@ -1,13 +1,17 @@
 package view;
 
 import common.StaticScanner;
+import controler.UserOneControler;
+import model.entity.UserOne;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String []args) {
-
+        UserOneControler userOneControler = new UserOneControler();
         Scanner input = StaticScanner.getDate();
         System.out.println("1.sign up");
         System.out.println("2.log in");
@@ -30,11 +34,23 @@ public class Main {
             input.nextLine();
             switch (requestFromUser) {
                 case 1 -> {
-                    // save
+                    UserOne userOne = new UserOne();
+                    System.out.print ("id ra vared konid: ");
+                    userOne.setId(input.nextLong());
+                    input.nextLine();
+
+                    System.out.print ("text ra vared konid: ");
+                    userOne.setText(input.nextLine());
+
+                    userOneControler.save(userOne);
                 }
 
                 case 2 -> {
-                    //findByAll
+                    List<UserOne> userOneList = new ArrayList<>();
+                    System.out.print ("id ra vared konid ta pm ha namayesh dade shavad: ");
+                    userOneList = userOneControler.findByAll(input.nextLong());
+
+                    userOneList.forEach(item -> System.out.println(item));
                 }
 
                 case 3 -> {
