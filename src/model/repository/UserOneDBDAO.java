@@ -23,7 +23,7 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
         try {
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
-            System.out.println("connected");
+            System.err.println("connected");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +68,6 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
     public void close() throws Exception {
         statement.close();
         connection.close();
-        System.out.println("disconnected");
+        System.err.println("disconnected");
     }
 }

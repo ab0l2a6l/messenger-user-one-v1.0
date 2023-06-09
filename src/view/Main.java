@@ -53,12 +53,12 @@ public class Main {
                     public void run() {
                         while (true) {
                             LocalTime time = LocalTime.now();
-                            System.out.println("time: " + time);
+                            System.err.println("time: " + time);
 
                             List<UserOne> userOneList;
                             userOneList = userOneControler.findByAll(userOne.getUsername());
 
-                            userOneList.forEach(System.out::println);
+                            userOneList.forEach(System.err::println);
 
                             try {
                                 Thread.sleep(30000);
