@@ -4,6 +4,7 @@ import common.StaticScanner;
 import controler.UserOneControler;
 import model.entity.UserOne;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,11 +33,10 @@ public class Main {
                 return;
 
             for (; ; ) {
-                menu();
-                int requestFromUser = input.nextInt();
-                input.nextLine();
-                switch (requestFromUser) {
-                    case 1 -> {
+
+                Thread inputData = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
                         UserOne user = new UserOne();
                         System.out.println("b ki mikhay pm bedi? ");
                         user.setUsername(input.nextLine());
@@ -46,30 +46,57 @@ public class Main {
 
                         userOneControler.save(user);
                     }
+                });
 
-                    case 2 -> {
-                        List<UserOne> userOneList;
-                        System.out.print("id ra vared konid ta pm ha namayesh dade shavad: ");
-                        userOneList = userOneControler.findByAll(userOne.getUsername());
+                Thread outputData = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            LocalTime time = LocalTime.now();
+                            System.out.println("time: " + time);
 
-                        userOneList.forEach(System.out::println);
+                            List<UserOne> userOneList;
+                            userOneList = userOneControler.findByAll(userOne.getUsername());
+
+                            userOneList.forEach(System.out::println);
+
+                            try {
+                                Thread.sleep(30000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
+                });
 
-                    case 3 -> {
-                        return;
-                    }
-                    default -> System.out.println("wrong number !!! ");
+                inputData.start(); // shroe kar nakh ha
+                outputData.start();
+
+                try {
+                    inputData.join(); // aya nakh ha ejra shode and?
+                    outputData.join();
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
-        } else if (kodom == 2) {
 
+//                    case 5 -> {
+//                        List<UserOne> userOneList;
+//                        System.out.print("id ra vared konid ta pm ha namayesh dade shavad: ");
+//                        userOneList = userOneControler.findByAll(userOne.getUsername());
+//
+//                        userOneList.forEach(System.out::println);
+                //                  }
+
+//                    default -> System.out.println("wrong number !!! ");
+            }
         }
     }
-
-    private static void menu() {
-        System.out.println("1.ersal payam");
-        System.out.println("2.daryaft payam");
-        System.out.println("3.exit");
-    }
-
 }
+
+//    private static void menu() {
+//        System.out.println("1.ersal payam");
+//        System.out.println("2.daryaft payam");
+//        System.out.println("3.exit");
+//    }
+
+
