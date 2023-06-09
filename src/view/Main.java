@@ -32,52 +32,48 @@ public class Main {
             if (!isResume)
                 return;
 
-            for (; ; ) {
+            Thread inputData = new Thread(() -> {
+                UserOne user = new UserOne();
 
-                Thread inputData = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        UserOne user = new UserOne();
-                        System.out.println("b ki mikhay pm bedi? ");
-                        user.setUsername(input.nextLine());
+                while (true) {
+                    System.out.println("b ki mikhay pm bedi? ");
+                    user.setUsername(input.nextLine());
 
-                        System.out.print("text ra vared konid: ");
-                        user.setText(input.nextLine());
+                    System.out.print("text ra vared konid: ");
+                    user.setText(input.nextLine());
 
-                        userOneControler.save(user);
-                    }
-                });
-
-                Thread outputData = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (true) {
-                            LocalTime time = LocalTime.now();
-                            System.err.println("time: " + time);
-
-                            List<UserOne> userOneList;
-                            userOneList = userOneControler.findByAll(userOne.getUsername());
-
-                            userOneList.forEach(System.err::println);
-
-                            try {
-                                Thread.sleep(30000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                });
-
-                inputData.start(); // shroe kar nakh ha
-                outputData.start();
-
-                try {
-                    inputData.join(); // aya nakh ha ejra shode and?
-                    outputData.join();
-                }catch (Exception e) {
-                    e.printStackTrace();
+                    userOneControler.save(user);
                 }
+            });
+
+            Thread outputData = new Thread(() -> {
+                List<UserOne> userOneList;
+                LocalTime time;
+                while (true) {
+                    time = LocalTime.now();
+                    System.err.println("time: " + time);
+
+                    userOneList = userOneControler.findByAll(userOne.getUsername());
+
+                    userOneList.forEach(System.err::println);
+
+                    try {
+                        Thread.sleep(30_000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+
+            inputData.start(); // shroe kar nakh ha
+            outputData.start();
+
+            try {
+                inputData.join(); // aya nakh ha ejra shode and?
+                outputData.join();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 //                    case 5 -> {
 //                        List<UserOne> userOneList;
@@ -85,10 +81,9 @@ public class Main {
 //                        userOneList = userOneControler.findByAll(userOne.getUsername());
 //
 //                        userOneList.forEach(System.out::println);
-                //                  }
+            //                  }
 
 //                    default -> System.out.println("wrong number !!! ");
-            }
         }
     }
 }
