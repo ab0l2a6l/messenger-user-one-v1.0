@@ -4,7 +4,6 @@ import common.StaticScanner;
 import controler.UserOneControler;
 import model.entity.UserOne;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,20 +12,7 @@ public class Main {
     public static void main(String []args) {
         UserOneControler userOneControler = new UserOneControler();
         Scanner input = StaticScanner.getDate();
-        System.out.println("1.sign up");
-        System.out.println("2.log in");
-        int signupOrLogin = input.nextInt();
-        input.nextLine();
 
-        if (signupOrLogin == 1)
-        {
-            // sabt nam
-
-        }
-        else if (signupOrLogin == 2)
-        {
-            //vorod
-        }
 
         for (; ; ) {
             menu();
@@ -46,11 +32,11 @@ public class Main {
                 }
 
                 case 2 -> {
-                    List<UserOne> userOneList = new ArrayList<>();
+                    List<UserOne> userOneList;
                     System.out.print ("id ra vared konid ta pm ha namayesh dade shavad: ");
                     userOneList = userOneControler.findByAll(input.nextLong());
 
-                    userOneList.forEach(item -> System.out.println(item));
+                    userOneList.forEach(System.out::println);
                 }
 
                 case 3 -> {
