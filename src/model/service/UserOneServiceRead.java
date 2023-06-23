@@ -8,4 +8,7 @@ public interface UserOneServiceRead {
     List<UserOne> findByALl(String  id);
 
     boolean findByUsername(UserOne userOne);
+
+
+    boolean listner (String id);
 }

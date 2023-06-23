@@ -1,6 +1,7 @@
 package model.entity;
 
 public class UserOne {
+
     private String text;
     private String username;
     private String password;
@@ -21,7 +22,7 @@ public class UserOne {
         this.text = text;
     }
 
-    public String  getUsername() {
+    public String getUsername() {
         return username;
     }
 

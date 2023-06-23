@@ -39,6 +39,20 @@ public class UserOneService implements UserOneServiceRead, UserOneServiceWrite {
     }
 
     @Override
+    public boolean listner(String id) {
+        boolean isTrue;
+
+        try {
+            read = new UserOneDBDAO();
+            isTrue = read.listner(id);
+            read.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return isTrue;
+    }
+
+    @Override
     public void save(UserOne userOne) {
         try {
             write = new UserOneDBDAO();

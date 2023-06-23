@@ -10,4 +10,6 @@ public interface UserOneDBDAORead {
     boolean findByUsername(UserOne userOne) throws Exception;
 
     void close() throws Exception;
+
+    boolean listner (String id)throws  Exception;
 }

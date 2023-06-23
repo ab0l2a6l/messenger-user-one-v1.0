@@ -46,31 +46,37 @@ public class Main {
                 }
             });
 
+
             Thread outputData = new Thread(() -> {
                 List<UserOne> userOneList;
                 LocalTime time;
-                while (true) {
-                    time = LocalTime.now();
+                     time = LocalTime.now();
                     System.err.println("time: " + time);
 
-                    userOneList = userOneControler.findByAll(userOne.getUsername());
+                        userOneList = userOneControler.findByAll(userOne.getUsername());
+                        userOneList.forEach(System.err::println);
 
-                    userOneList.forEach(System.err::println);
+             });
 
+            Thread listener = new Thread(() -> {
+                while (true) {
                     try {
-                        Thread.sleep(30_000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        if (userOneControler.listner(userOne.getUsername())) {
+                            System.out.println("new message");
+                            outputData.start();
+                        }
+                    }catch (Exception e) {
+                        System.out.println(e.getMessage());
                     }
                 }
             });
 
             inputData.start(); // shroe kar nakh ha
-            outputData.start();
-
+            listener.start();
             try {
                 inputData.join(); // aya nakh ha ejra shode and?
                 outputData.join();
+                listener.join();
             } catch (Exception e) {
                 e.printStackTrace();
             }

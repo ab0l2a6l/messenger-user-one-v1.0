@@ -22,4 +22,8 @@ public class UserOneControler {
     public boolean findByUsername(UserOne userOne) {
         return read.findByUsername(userOne);
     }
+
+    public boolean listner(String id) {
+        return read.listner(id);
+    }
 }

@@ -30,8 +30,22 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
     }
 
     @Override
-    public List<UserOne> findByALl(String  id) throws Exception {
-        query = "select * from chat where username_private = \"" + id+"\"";
+    public boolean listner(String id) throws Exception {
+        query = "select listner from listener where chat_id =\"" + id + "\"";
+        ResultSet set = statement.executeQuery(query);
+        boolean isTrue = false;
+        if (set.next()) {
+            isTrue = set.getBoolean("listner");
+        }
+        if (isTrue)
+            return true;
+        return false;
+    }
+
+    @Override
+    public List<UserOne> findByALl(String id) throws Exception {
+
+        query = "select * from chat where username_private = \"" + id + "\"";
         ResultSet set = statement.executeQuery(query);
         List<UserOne> userOneList = new ArrayList<>();
         while (set.next()) {
@@ -40,13 +54,18 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
             userOne.setText(set.getString("text"));
             userOneList.add(userOne);
         }
+        query = "update listener set  listner=false  where chat_id = \"" + id +
+                "\" ";
+        System.out.println(query);
+        statement.executeUpdate(query);
         return userOneList;
+
     }
 
     @Override
     public boolean findByUsername(UserOne userOne) throws Exception {
-        query = "select * from private where password =\""+userOne.getPassword()
-                +"\" and username =\""+userOne.getUsername() +"\"";
+        query = "select * from private where password =\"" + userOne.getPassword()
+                + "\" and username =\"" + userOne.getUsername() + "\"";
         System.out.println(query);
         ResultSet set = statement.executeQuery(query);
         if (set.next()) {
@@ -60,6 +79,9 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
         query = "insert into chat (text , username_private) values (\""
                 + userOne.getText() + "\" , \"" + userOne.getUsername() + "\")";
         statement.executeUpdate(query);
+        query = "update listener set listner=true where chat_id = \"" + userOne.getUsername() +
+                "\" ";
+        statement.executeUpdate(query);
         System.out.println(query);
 
     }
@@ -70,4 +92,6 @@ public class UserOneDBDAO implements UserOneDBDAORead, UserOneDBDAOWrite {
         connection.close();
         System.err.println("disconnected");
     }
+
+
 }
